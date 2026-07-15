@@ -2,9 +2,9 @@
 
 import { Metadata } from "next"
 import { CreatorsClient } from "./creators-client"
+import { fetchCreatorsFromSheet } from "@/lib/sheets"
 
-export const revalidate = 0
-export const dynamic = "force-dynamic"
+export const revalidate = 300 // Revalidate every 5 minutes
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -32,6 +32,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function CreatorsPage() {
-  return <CreatorsClient />
+export default async function CreatorsPage() {
+  const initialCreators = await fetchCreatorsFromSheet()
+  return <CreatorsClient initialCreators={initialCreators} />
 }
