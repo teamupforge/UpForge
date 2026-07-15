@@ -59,12 +59,18 @@ function getPromotedCreators(all: SheetCreator[]): SheetCreator[] {
   return selected
 }
 
-export function CreatorsClient() {
+interface CreatorsClientProps {
+  initialCreators?: SheetCreator[]
+}
+
+export function CreatorsClient({ initialCreators = [] }: CreatorsClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [creators, setCreators] = useState<SheetCreator[]>([])
-  const [promotedCreators, setPromotedCreators] = useState<SheetCreator[]>([])
+  const [creators, setCreators] = useState<SheetCreator[]>(initialCreators)
+  const [promotedCreators, setPromotedCreators] = useState<SheetCreator[]>(() => {
+    return initialCreators.length > 0 ? getPromotedCreators(initialCreators) : []
+  })
   const [selectedCreator, setSelectedCreator] = useState<SheetCreator | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(initialCreators.length === 0)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const [visibleCount, setVisibleCount] = useState(DESKTOP_INITIAL)
@@ -101,8 +107,10 @@ export function CreatorsClient() {
   }, [])
 
   useEffect(() => {
-    loadCreators()
-  }, [loadCreators])
+    if (creators.length === 0) {
+      loadCreators()
+    }
+  }, [loadCreators, creators.length])
 
   // Profile modal action triggers & URL query string synchronization
   const handleOpenProfile = useCallback((creator: SheetCreator) => {
@@ -289,7 +297,7 @@ export function CreatorsClient() {
     // Sort
     switch (sortBy) {
       case "recent":
-        list = [...list].sort((a, b) => b.joinedAt.getTime() - a.joinedAt.getTime())
+        list = [...list].sort((a, b) => new Date(b.joinedAt).getTime() - new Date(a.joinedAt).getTime())
         break
       case "motivation":
         list = [...list].sort((a, b) => b.motivationScore - a.motivationScore)
