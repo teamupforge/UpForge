@@ -1,8 +1,8 @@
 // components/creators/creator-card-desktop.tsx
 "use client"
 
-import { SheetCreator, formatFollowerCount } from "@/lib/sheets"
-import { Users, TrendingUp, ShieldCheck } from "lucide-react"
+import { SheetCreator, formatFollowerCount, getPrestigeTier } from "@/lib/sheets"
+import { Award, TrendingUp, ShieldCheck } from "lucide-react"
 
 interface CreatorCardDesktopProps {
   creator: SheetCreator
@@ -118,9 +118,9 @@ export function CreatorCardDesktop({
       <div className="border-t border-slate-100 dark:border-slate-800/60 pt-3 flex items-center justify-around gap-2 mb-3">
         {creator.followerCount > 0 && (
           <div className="flex items-center gap-1">
-            <Users className="w-3.5 h-3.5 text-slate-400" />
+            <Award className="w-3.5 h-3.5 text-amber-500" />
             <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">
-              {formatFollowerCount(creator.followerCount)} Reach
+              {getPrestigeTier(creator.followerCount)}
             </span>
           </div>
         )}
