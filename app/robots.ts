@@ -36,7 +36,7 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      // Rule 1: Allow major search engine crawlers with specific paths
+      // Rule 1: Allow major search engine crawlers and AEO bots with specific paths
       {
         userAgent: [
           "Googlebot",
@@ -45,6 +45,14 @@ export default function robots(): MetadataRoute.Robots {
           "Googlebot-Video",
           "AdsBot-Google",
           "AdsBot-Google-Mobile",
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "ClaudeBot",
+          "Claude-Web",
+          "PerplexityBot",
+          "Applebot",
+          "Applebot-Extended",
         ],
         allow: commonAllows,
         disallow: commonDisallows,
@@ -62,21 +70,25 @@ export default function robots(): MetadataRoute.Robots {
         crawlDelay: 2,
       },
       
-      // Rule 3: Block AI training bots completely
+      // Rule 3: Block AI training-only and wasteful SEO scraping bots completely
       {
         userAgent: [
-          "GPTBot",
           "CCBot",
-          "ClaudeBot",
           "Amazonbot",
           "Google-Extended",
           "meta-externalagent",
           "Bytespider",
-          "Applebot-Extended",
-          "PerplexityBot",
           "Anthropic-AI",
           "cohere-ai",
           "Diffbot",
+          "AhrefsBot",
+          "SemrushBot",
+          "DotBot",
+          "Rogerbot",
+          "MJ12bot",
+          "MegaIndex",
+          "CriteoBot",
+          "PetalBot",
         ],
         disallow: ["/"],
       },
